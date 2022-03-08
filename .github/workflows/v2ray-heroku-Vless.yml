@@ -1,0 +1,28 @@
+name: v2ray-heroku-Vless
+on:
+  schedule:
+    - cron: '14 3 */1 * *'
+  workflow_dispatch:
+  watch:
+    types: started
+  repository_dispatch:
+    types: sync-v2ray-heroku-Vless-GithubSync
+jobs:
+  repo-sync:
+    env:
+      PAT: ${{ secrets.PAT }} 
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: sync v2ray-heroku-Vless-GithubSync
+        uses: repo-sync/github-sync@v2
+        if: env.PAT
+        with:
+          source_repo: "https://github.com/bclswl0827/v2ray-heroku.git"
+          source_branch: "vless"
+          destination_branch: "v2ray-heroku-Vless"
+          github_token: ${{ secrets.PAT }}
