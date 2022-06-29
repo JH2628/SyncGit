@@ -20,7 +20,6 @@ def get_driver_version():
        print('Check chrome version failed:{}'.format(e))
        return 0
 
-
 def glados_checkin(driver):
     checkin_url = "https://glados.rocks/api/user/checkin"    
     checkin_query = """
@@ -28,7 +27,6 @@ def glados_checkin(driver):
         var request = new XMLHttpRequest();
         request.open("POST","%s",false);
         request.setRequestHeader('content-type', 'application/json');
-        request.withCredentials=true;
         request.send('{"token": "glados.network"}');
         return request;
         })();
@@ -36,9 +34,22 @@ def glados_checkin(driver):
     checkin_query = checkin_query.replace("\n", "")
     resp = driver.execute_script("return " + checkin_query)
     resp = json.loads(resp["response"])
-    del resp["list"]
-    print("Time:", time.asctime(time.localtime()), resp)
-    assert resp["code"] in [0,1]
+    return resp["code"], resp["message"]
+
+def glados_status(driver):
+    status_url = "https://glados.rocks/api/user/status"    
+    status_query = """
+        (function (){
+        var request = new XMLHttpRequest();
+        request.open("GET","%s",false);
+        request.send(null);
+        return request;
+        })();
+        """ % (status_url)
+    status_query = status_query.replace("\n", "")
+    resp = driver.execute_script("return " + status_query)
+    resp = json.loads(resp["response"])
+    return resp["code"], resp["data"]
 
 def glados(cookie_string):
     options = uc.ChromeOptions()
@@ -49,15 +60,17 @@ def glados(cookie_string):
 
     # Load cookie
     driver.get("https://glados.rocks")
-
+      
+    if cookie_string.startswith("cookie:"):
+        cookie_string = cookie_string[len("cookie:"):]
     cookie_dict = [ 
-        {"name" : x.split('=')[0].strip(), "value": x[x.find('=')+1:]} 
+        {"name": x[:x.find('=')].strip(), "value": x[x.find('=')+1:].strip()} 
         for x in cookie_string.split(';')
     ]
 
     driver.delete_all_cookies()
     for cookie in cookie_dict:
-        if cookie["name"] in ["koa:sess", "koa:sess.sig", "__stripe_mid", "__cf_bm"]:
+        if cookie["name"] in ["koa:sess", "koa:sess.sig"]:
             driver.add_cookie({
                 "domain": "glados.rocks",
                 "name": cookie["name"],
@@ -66,17 +79,23 @@ def glados(cookie_string):
             })
     
     driver.get("https://glados.rocks")
-    
     WebDriverWait(driver, 240).until(
         lambda x: x.title != "Just a moment..."
     )
-    glados_checkin(driver)
+    
+    checkin_code, checkin_message = glados_checkin(driver)
+    print(f"【Checkin】{checkin_message}")
+    assert checkin_code != -2, "Login failed, please check your cookie."
+    assert checkin_code in [0,1], "Check in failed."
+
+    status_code, status_data = glados_status(driver)
+    left_days = int(float(status_data["leftDays"]))
+    print(f"【Status】Left days: {left_days}")
 
     driver.close()
     driver.quit()
     
 if __name__ == "__main__":
     cookie_string = sys.argv[1]
-    assert cookie_string
     
     glados(cookie_string)
