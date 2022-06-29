@@ -8,7 +8,7 @@ GLaDOS automatic check-in bypassing CloudFlare using github action
 ## 使用方法
 ### 1. 添加 Cookie 至 Secrets
 - 登陆[GLaDOS](https://glados.rocks/)后，F12打开开发者工具。
-- 刷新网页，并在浏览器中提取复制`Cookie`项（本程序可处理`Cookie:`前缀，使用者复制该项时是否该前缀均可)
+- 刷新网页，并在浏览器中提取复制`Cookie`项（本程序可处理`Cookie:`前缀，使用者复制该项时是否具有前缀均可)
 <p align="center">
   <img src="imgs/Step1.png" />
 </p>
@@ -25,7 +25,7 @@ GLaDOS automatic check-in bypassing CloudFlare using github action
 </p>
 
 ### 2. 启用 Actions
-- 在项目页面，依次点击`Actions`-->`glaods`-->`Run workflow`-->`Run workflow`以激活Actions
+- 在项目页面，依次点击`Actions`-->`glados`-->`Run workflow`-->`Run workflow`以激活Actions
 <p align="center">
   <img src="imgs/Step4.png" />
 </p>
