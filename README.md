@@ -4,6 +4,7 @@ GLaDOS automatic check-in bypassing CloudFlare using github action
 ## 功能描述
 1. 每日自动进行签到（本项目可通过CloudFlare反爬机制）
 2. 支持多用户签到，多个Cookie之间采用`&&`手动分割
+3. 本项目可触发Github Notifications，出现Cookie过期/签到失败等可自动发送Email
 3. 本项目包含Github Actions keep alive模块，可自动激活Github Actions
 
 ## 使用方法
