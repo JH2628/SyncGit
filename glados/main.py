@@ -14,11 +14,13 @@ if __name__ == "__main__":
     pushplus_token = os.environ.get("PUSHPLUS_TOKEN", None)
     serverChan_sendkey = os.environ.get("SERVERCHAN_SENDKEY", None)
     weCom_webhook = os.environ.get("WECOM_WEBHOOK", None)
+    bark_deviceKey = os.environ.get("BARK_DEVICEKEY", None)
 
     message_tokens = {
         "pushplus_token": pushplus_token,
         "serverChan_token": serverChan_sendkey,
-        "weCom_webhook": weCom_webhook
+        "weCom_webhook": weCom_webhook,
+        "bark_deviceKey": bark_deviceKey
     }
 
     message_sender = MessageSender()
@@ -38,6 +40,8 @@ if __name__ == "__main__":
     else:
         title = "GLaDOS check in failed"
     message_all = f"{title}\n\n{message_all}"
+    while message_all.endswith("\n"):
+        message_all = message_all[:-1]
     message_sender.send_all(message_tokens= message_tokens, title = title, content = message_all)
 
     assert -2 not in checkin_codes, "At least one account login fails."
