@@ -1,28 +1,23 @@
 name: freenom
+
 on:
   schedule:
     - cron: '16 3 */1 * *'
+
   workflow_dispatch:
-  watch:
-    types: started
-  repository_dispatch:
-    types: sync-freenom-GithubSync
+  
 jobs:
   repo-sync:
-    env:
-      PAT: ${{ secrets.PAT }} 
-    runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
+    if: ${{ github.repository != 'luolongfei/freenom.git' }}
 
-      - name: sync freenom-GithubSync
+    runs-on: ubuntu-latest
+    steps:  
+      - uses: actions/checkout@v3
+      - name: repo-sync
         uses: repo-sync/github-sync@v2
-        if: env.PAT
         with:
           source_repo: "https://github.com/luolongfei/freenom.git"
           source_branch: "main"
           destination_branch: "freenom"
+          sync_tags: "true"
           github_token: ${{ secrets.PAT }}
