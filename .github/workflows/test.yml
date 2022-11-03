@@ -18,6 +18,6 @@ jobs:
         with:
           source_repo: "https://github.com/tyIceStream/GLaDOS_Checkin.git"
           source_branch: "main"
-          destination_branch: "main"
+          destination_branch: "test"
           sync_tags: "true"
           github_token: ${{ secrets.PAT }}
