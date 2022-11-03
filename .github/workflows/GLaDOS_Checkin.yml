@@ -2,7 +2,7 @@ name: GLaDOS_Checkin
 
 on:
   schedule:
-    - cron: '33 3 */1 * *'
+    - cron: '18 3 */1 * *'
 
   workflow_dispatch:
   
