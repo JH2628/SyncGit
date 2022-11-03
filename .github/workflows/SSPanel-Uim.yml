@@ -1,4 +1,4 @@
-name: SSPanel-Uim-sync
+name: SSPanel-Uim
 
 on:
   schedule:
