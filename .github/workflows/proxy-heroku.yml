@@ -2,7 +2,7 @@ name: proxy-heroku
 
 on:
   schedule:
-    - cron: '15 3 */1 * *'
+#    - cron: '15 3 */1 * *'
 
   workflow_dispatch:
   
