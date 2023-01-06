@@ -19,10 +19,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install requirements
         run: |
-          pip3 install -r ./GLaDOS_Checkin/glados/requirements.txt
+          pip3 install -r https://raw.githubusercontent.com/JH2628/SyncGit/GLaDOS_Checkin/glados/requirements.txt
       - name: Run checkin
         run: |
-          python3 ./GLaDOS_Checkin/glados/main.py --cookie_string "${{ secrets.GLADOS_COOKIE }}"
+          python3 https://raw.githubusercontent.com/JH2628/SyncGit/GLaDOS_Checkin/glados/main.py --cookie_string "${{ secrets.GLADOS_COOKIE }}"
         env: 
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
           SERVERCHAN_SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
